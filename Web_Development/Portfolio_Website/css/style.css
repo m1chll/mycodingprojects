@@ -755,7 +755,7 @@ footer a{
 
   .home-img{
     
-    max-width: 45%;
+    max-width: 38%;
   }
   
 
@@ -831,6 +831,41 @@ footer a{
   }
 }
 
+/***************custom nadeem**********************/
+
+@media screen and (min-width: 540px) and (max-width: 730px) {
+
+  .home-container .home-img img {
+    width: 100%;
+    transform: translate(75%, -50%);
+  }
+}
+@media screen and (max-width: 620px){
+  .home-img{ 
+    max-width: 45%;
+  }
+  .home-container .home-img img {
+    width: 100%;
+    transform: translate(50%, -50%);
+  }
+}
+
+@media screen and (max-width: 540px){
+  .home-container .home-img img {
+    width: 100%;
+    transform: translate(50%, -65%);
+  }
+}
+@media screen and (max-width: 410px){
+  .home-container .home-img img {
+    width: 100%;
+    transform: translate(50%, -108%);
+  }
+}
+
+
+/*****************end nadeem************************/
+
 /*Media query max-width 730px*/
 @media screen and (max-width: 730px){
   /*Common styles for all sections*/
@@ -857,10 +892,10 @@ footer a{
     position: absolute;
   }
 
-  .home-container .home-img img {
+  /* .home-container .home-img img {
     width: 100%;
     transform: translate(50%, -110%);
-  }
+  } */
   
 
   .home .home-container .info{
