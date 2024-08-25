@@ -1,0 +1,3 @@
+## Object-Oriented Programming
+---
+Throughout my education and internships, I've gained experience in object-oriented programming (OOP). My primary programming language is C#, which I’ve used extensively in both academic and personal projects. Additionally, I’ve had exposure to Java, which has broadened my understanding of OO P principles across different platforms.
