@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Habit Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center; 
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f4f4f4;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        
+        .center-text {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .left-align .right-align {
+            flex-basis: 100px; 
+            white-space: nowrap; 
+        } 
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .buttons-container button {
+            margin: 0 10px; 
+        }
+
+        .habit-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .habit-block {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .habit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .habit-name {
+            margin: 0 10px;
+        }
+
+        .week-days {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+
+        .day {
+            flex: 1;
+            text-align: center;
+        }
+
+        .day-name {
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function updateCheck(habitId, date, checked) {
+            const parts = date.split('.');
+            const isoDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+            fetch('/habit/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ habitId, date: isoDate, checked }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function changeWeek(offset) {
+            const currentDate = new Date('<%= baseDate %>');
+            currentDate.setDate(currentDate.getDate() + offset);
+            window.location.href = `/?date=${currentDate.toISOString().split('T')[0]}`;
+        }
+
+        function renameHabit(habitId) {
+            const newName = prompt('Bitte geben Sie den neuen Namen für die Gewohnheit ein:');
+            if (newName) {
+                fetch('/habit/update-name', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ habitId, newName }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Fehler beim Aktualisieren des Habit-Namens');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="left-align"><%= name %></div> <!-- Neuer Container für den Namen -->
+        <div class="center-text">Habit Tracker</div> <!-- Zentrierter Text -->
+        <div class="right-align">
+            <form action="/logout?_method=DELETE" method="POST">
+                <button type="submit">Log Out</button>
+            </form>
+        </div> <!-- Neuer Container für den Logout-Button -->
+    </div>
+    <div class="buttons-container">
+        <button onclick="changeWeek(-7)">Vorherige Woche</button>
+        <form action="/habits" method="POST" style="display: inline;">
+            <input type="text" name="name" placeholder="Neue Gewohnheit" required>
+            <button type="submit">Hinzufügen</button>
+        </form>
+        <button onclick="changeWeek(7)">Nächste Woche</button>
+    </div>
+    <ul class="habit-list">
+        <% if (typeof habits !== 'undefined' && habits.length > 0) { %>
+            <% habits.forEach(function(habit){ %>
+                <li class="habit-block">
+                    <div class="habit-header">
+                        <button onclick="renameHabit('<%= habit._id %>')">Ändern</button>
+                        <div class="habit-name"><%= habit.name %></div>
+                        <form action="/habit/delete" method="POST" style="display: inline;">
+                            <input type="hidden" name="habitId" value="<%= habit._id %>">
+                            <button type="submit">Löschen</button>
+                        </form>
+                    </div>
+                    <div class="week-days">
+                        <% weekDates.forEach(function(date, index){ %>
+                            <div class="day">
+                                <div class="day-name">
+                                    <%= ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'][new Date(date.split('.').reverse().join('-')).getDay()] %>
+                                </div>
+                                <div><%= date %></div>
+                                <label>
+                                    <input type="checkbox" name="date_<%= date %>" value="<%= date %>"
+                                    <% if(habit.checks && habit.checks.some(check => new Date(check).toLocaleDateString('de-DE') === date)) { %> checked <% } %>
+                                    onchange="updateCheck('<%= habit._id %>', '<%= date %>', this.checked)">
+                                </label>
+                            </div>
+                        <% }); %>
+                    </div>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <p>Keine Gewohnheiten gefunden.</p>
+        <% } %>
+    </ul>
+</body>
+</html>
