@@ -1,6 +1,6 @@
 # Minesweeper Konsolenanwendung
 
-Willkommen zum Minesweeper! Dieses Projekt wurde während meines Kurzpraktikums bei der Egeli Informatik AG in enger Zusammenarbeit mit @sophia entwickelt. Das Spiel bietet klassische Minesweeper-Action in der Konsole und enthält viele durchdachte Features, die das Spielerlebnis verbessern und erweitern.
+Willkommen zum Minesweeper! Dieses Projekt wurde während meines Kurzpraktikums bei der Egeli Informatik AG in enger Zusammenarbeit mit [Sophia Cuarte](https://github.com/sophiacuarte) entwickelt. Das Spiel bietet klassische Minesweeper-Action in der Konsole und enthält viele durchdachte Features, die das Spielerlebnis verbessern und erweitern.
 
 ## Hauptfunktionen
 
