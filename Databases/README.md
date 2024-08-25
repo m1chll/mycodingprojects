@@ -1,0 +1,2 @@
+## Databases and Data Management
+In school, I gained experience working with both relational and NoSQL databases. I’ve worked with MySQL, SQLite, and MongoDB, gaining understanding of data management. During my internship, I also had the opportunity to work with Entity Framework, which allowed me to delve deeper into database interactions in C#.

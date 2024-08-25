@@ -1,0 +1,2 @@
+## Scripting and Automation
+During my time at the Informatikmittelschule, I also worked with scripting languages like PowerShell and Bash. These tools have been invaluable in automating tasks, managing systems, and improving efficiency in various projects.

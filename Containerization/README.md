@@ -1,0 +1,2 @@
+## Containerization and Clound technologies
+I have practical experience with Docker and AWS, gained through various IT modules at the Informatikmittelschule. These technologies have allowed me to understand the importance of containerization and cloud services in modern software deployment.
