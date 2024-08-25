@@ -1,28 +1,34 @@
-﻿using Minesweeper;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("MinesweeperTest")]
 namespace Minesweeper
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            //var score = new Score("Player", 555, 10, 64);
+            //var context = new MinesweeperContext();
+            //context.Scores.Add(score);
+            //context.SaveChanges();
+
+            //context.Scores.OrderByDescending(s => s.Points).ToList();
+            EnsureDbMigrated();
             while (true)
             {
-                Game Game = new Game();
-                Game.PlayGame();
-
-                Console.WriteLine("Press 1 to play again!");
-                string input = Console.ReadLine();
-                Thread.Sleep(1000);
+                Game game = new Game();
+                game.PlayGame();
+                Console.ReadKey();
                 Console.Clear();
-
-                if (input != "1")
-                {
-                    break;
-                }
             }
+        }
+
+        private static void EnsureDbMigrated()
+        {
+            using var context = new MinesweeperContext();
+
+                context.Database.Migrate();
         }
     }
 }

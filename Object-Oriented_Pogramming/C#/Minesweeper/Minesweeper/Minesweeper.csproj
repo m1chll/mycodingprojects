@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,27 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Sounds\GameLost.wav" />
-    <None Remove="Sounds\PauseSound.wav" />
-    <None Remove="Sounds\StartGame.mp3" />
-    <None Remove="Sounds\StartGame.wav" />
-    <None Remove="Sounds\YouWon.wav" />
+    <None Remove="Resources\bombsound.wav" />
+    <None Remove="Resources\winsound.wav" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Sounds\GameLost.wav" />
-    <EmbeddedResource Include="Sounds\PauseSound.wav" />
-    <EmbeddedResource Include="Sounds\StartGame.wav" />
-    <EmbeddedResource Include="Sounds\YouWon.wav" />
+    <EmbeddedResource Include="Resources\bombsound.wav" />
+    <EmbeddedResource Include="Resources\winsound.wav" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Minesweeper.Logic\Minesweeper.Logic.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+    <PackageReference Include="System.Windows.Extensions" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

@@ -13,391 +13,461 @@ using System.Threading.Tasks.Sources;
 using System.Runtime.CompilerServices;
 using System.Drawing;
 using System.Media;
-using System.Reflection;
-using NAudio.Wave;
 
-namespace Minesweeper
+namespace Minesweeper;
+
+internal class UI
 {
-    public class UI
+
+    private UI() { }
+
+    private static UI? _instance;
+    public static UI Instance
     {
-        /// <summary>
-        /// Stopwatch used to track elapsed time during the game.
-        /// </summary>
-        ConsoleColor CurrentColor;
-        public Stopwatch stopwatch = new Stopwatch();
-
-        public void PrintStartScreen()
+        get
         {
-            string input;
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("         ______   __  __  ____    ____    __      __  ____    ____    ____    ____    ____       ");
-            Console.WriteLine(" /'\\_/`\\/\\__  _\\ /\\ \\ /\\ \\ /\\  _`\\ /\\  _`\\ /\\ \\  __/\\ \\ /\\  _`\\ /\\  _`\\ /\\  _`\\ /\\  _`\\     ");
-            Console.WriteLine("/\\      \\/_/\\ \\/ \\ \\ `\\\\ \\ \\ \\L\\_\\ \\,\\L\\_\\ \\ \\/\\ \\ \\ \\ \\ \\L\\_\\ \\ \\L\\_\\ \\ \\L\\ \\ \\ \\L\\_\\ \\ \\L\\ \\   ");
-            Console.WriteLine("\\ \\ \\__\\ \\ \\ \\ \\  \\ \\ , ` \\ \\  _\\L\\/_\\__ \\\\ \\ \\ \\ \\ \\ \\ \\  _\\L\\ \\  _\\L\\ \\ ,__/\\ \\  _\\L\\ \\ ,  /   ");
-            Console.WriteLine(" \\ \\ \\_/\\ \\ \\_\\ \\__\\ \\ \\`\\ \\ \\ \\L\\ \\/\\ \\L\\ \\ \\ \\_/ \\_\\ \\ \\ \\L\\ \\ \\ \\L\\ \\ \\ \\/  \\ \\ \\L\\ \\ \\ \\\\ \\  ");
-            Console.WriteLine("  \\ \\_\\\\ \\_\\/\\_____\\\\ \\_\\ \\_\\ \\____/\\ `\\____\\ `\\___x___/\\ \\____/\\ \\____/\\ \\_\\   \\ \\____/\\ \\_\\ \\_\\");
-            Console.WriteLine("   \\/_/ \\/_/\\/_____/ \\/_/\\/_/\\/___/  \\/_____/'\\/__/\\__/  \\/___/  \\/___/  \\/_/    \\/___/  \\/_/\\/_/");
-            Console.WriteLine("");
-            Console.WriteLine("2");
-
-            Console.ResetColor();
-            Console.WriteLine("");
-            Console.WriteLine("-----------------------------------------------------------------------");
-            Console.WriteLine("Instructions:");
-            Console.WriteLine("   1. You can decide what size you want your gameboard to be but it must be a square. Typing a single number is enough.");
-            Console.WriteLine("   2. After, you'll be presented with a grid of covered cells.");
-            Console.WriteLine("   3. Enter coordinates (row, column) to reveal a cell or flag it.");
-            Console.WriteLine("   4. After the coordinates of the field, type:");
-            Console.WriteLine("     '- R' to Reveal.'");
-            Console.WriteLine("     '- F' to set a Flag.'");
-            Console.WriteLine("     '- RF' to set Remove a Flag.'");
-            Console.WriteLine("     '- Example: \"a4r\"'");
-            Console.WriteLine("   5. Numbers indicate how many adjacent cells contain mines.");
-            Console.WriteLine("   6. Be careful! If you reveal a mine, the game ends.");
-            Console.WriteLine("   7. You win by setting a flag on all covered mines. ;)");
-            Console.WriteLine("   8. As soon as you enter the size you want your gameboard to be, a stopwatch starts. So think fast!");
-            Console.WriteLine("-----------------------------------------------------------------------");
-            Console.WriteLine("Legend:");
-            Console.WriteLine("   - '■' represents a covered cell.");
-            Console.WriteLine("   - 'M' is a mine.");
-            Console.WriteLine("   - 'F' is a flag marking a potential mine.");
-            Console.WriteLine("   - Numbers indicate how many mines are adjacent to that cell.");
-            Console.WriteLine("-----------------------------------------------------------------------");
-            Console.WriteLine("Hotkeys:");
-            Console.WriteLine("   - 'U' Undo the last move.");
-            Console.WriteLine("   - 'P' Make a break.");
-            Console.WriteLine("   - 'C' Continue after making a break.");
-            Console.WriteLine("   - Numbers indicate how many mines are adjacent to that cell.");
-            Console.WriteLine("-----------------------------------------------------------------------");
-
-
-            while (true)
+            if (_instance == null)
             {
-                Console.WriteLine("Press 1 to start");
-                input = Console.ReadLine();
-                if (input == "1")
+                _instance = new UI();
+            }
+            return _instance;
+        }
+    }
+
+
+
+    private int GameboardSize { get; set; }
+    private string _fieldInput;
+    public Stopwatch stopwatch = new Stopwatch();
+    CancellationTokenSource source = new CancellationTokenSource();
+    ConsoleColor currentLineColor;
+    private bool _isStarted = false;
+    private string UserName { get; set; }
+
+    public void PrintStartScreen()
+    {
+        string input;
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        WriteLine("    __  ________   ______________       __________________  __________");
+        WriteLine("   /  |/  /  _/ | / / ____/ ___| |     / / ____/ ____/ __ \\/ ____/ __ \\");
+        WriteLine("  / /|_/ // //  |/ / __/  \\__ \\| | /| / / __/ / __/ / /_/ / __/ / /_/ /");
+        WriteLine(" / /  / _/ // /|  / /___ ___/ /| |/ |/ / /___/ /___/ ____/ /___/ _, _/ ");
+        WriteLine("/_/  /_/___/_/ |_/_____//____/ |__/|__/_____/_____/_/   /_____/_/ |_|  ");
+        Console.ResetColor();
+        WriteLine("");
+
+        WriteLine("-----------------------------------------------------------------------");
+        WriteLine("Instructions:");
+        WriteLine("   1. You can decide what size you want your gameboard to be but it must be a square. Typing a single number is enough.");
+        WriteLine("   2. After, you'll be presented with a grid of covered cells.");
+        WriteLine("   3. Enter coordinates (row, column) to reveal a cell or flag it.");
+        WriteLine("   4. After the coordinates of the field, type:");
+        WriteLine("     '- R' to Reveal.'");
+        WriteLine("     '- F' to set a Flag.'");
+        WriteLine("     '- RF' to set Remove a Flag.'");
+        WriteLine("     '- Example: \"a4r\"'");
+        WriteLine("   5. Numbers indicate how many adjacent cells contain mines.");
+        WriteLine("   6. Be careful! If you reveal a mine, the game ends.");
+        WriteLine("   7. You win by setting a flag on all covered mines. ;)");
+        WriteLine("   8. As soon as you enter the size you want your gameboard to be, a stopwatch starts. So think fast!");
+        WriteLine("-----------------------------------------------------------------------");
+        WriteLine("Legend:");
+        WriteLine("   - '■' represents a covered cell.");
+        WriteLine("   - 'M' is a mine.");
+        WriteLine("   - 'P' is a flag marking a potential mine.");
+        WriteLine("   - Numbers indicate how many mines are adjacent to that cell.");
+        WriteLine("-----------------------------------------------------------------------");
+        while (true)
+        {
+            WriteLine("Press 1 to see the Highscores");
+            WriteLine("Press 2 to play MINESWEEPER");
+            input = Console.ReadLine();
+            if (input == "1")
+            {
+                Console.Clear();
+                PrintHighscores();
+                WriteLine("");
+                WriteLine("");
+            }
+            if (input == "2") 
+            {
+                break;
+            }
+        _isStarted = false;
+        }
+        Console.Clear();
+    }
+
+    private void PrintHighscores()
+    {
+        List<Score> topScores = Highscore.GetTopScores();
+        List<List<string>> highestScores = Highscore.ConvertHighscorestoList(topScores);
+
+        foreach (var scoreInfo in highestScores)
+        {
+            foreach (var element in scoreInfo) 
+            { 
+                Write(element + ", ");
+            }
+            WriteLine("");
+        }
+    }
+
+
+    public string GetUsername()
+    {
+        string pattern = @"^.{1,30}$";
+        string userName;
+        do
+        {
+            Write("Please enter your name: ");
+            userName = Console.ReadLine();
+        }
+        while (!Regex.IsMatch(userName, pattern));
+
+        return userName;        
+    }
+
+
+    public int GetGameboardSize()
+    {
+        int gameboardSize;
+        while (true)
+        {
+            WriteLine("What size should your gameboard be? (enter a number between 8 and 26) ");
+            if (int.TryParse(Console.ReadLine(), out gameboardSize))
+            {
+                if (gameboardSize >= 8 && gameboardSize <= 26)
                 {
                     break;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Asks the user for the game difficulty (Hard, Medium, Easy).
-        /// </summary>
-        /// <returns>The selected difficulty level.</returns>
-        public string GetDifficulty()
-        {
-            string difficulty = "";
-            Regex validInput = new Regex("^[EMH]$"); // Regex für E, M, oder H
-
-            while (!validInput.IsMatch(difficulty))
-            {
-                Console.WriteLine("Please enter your difficulty: ");
-                Console.WriteLine("E = Easy");
-                Console.WriteLine("M = Medium");
-                Console.WriteLine("H = Hard");
-                difficulty = Console.ReadLine().ToUpper(); // Großbuchstaben, um auf Groß-/Kleinschreibung nicht zu achten
-
-                if (!validInput.IsMatch(difficulty))
+                else
                 {
-                    Console.WriteLine("Invalid input. Please enter E, M, or H.");
+                    WriteLine("Please enter a number in the range of 8 and 26.");
                 }
-            }
-            return difficulty;
-        }
-
-
-        /// <summary>
-        /// Asks the user for field coordinates and action (Reveal, Flag, Remove Flag).
-        /// </summary>
-        /// <returns>The input field coordinates and action.</returns>
-        public FieldInput GetFieldUpdate()
-        {
-            bool inputCorrect = false;
-            string fieldInputString;
-
-            do
-            {
-                Console.WriteLine("Enter coordinates (row, column) and action (R for Reveal, F for Flag, RF for Remove Flag), e.g., 'A4R':");
-                fieldInputString = Console.ReadLine();
-                fieldInputString = fieldInputString.ToUpper();
-                inputCorrect = CheckFieldInput(fieldInputString);
-            } while (!inputCorrect);
-
-            if(fieldInputString == "U" || fieldInputString == "u")
-            {
-                FieldInput inputUndo = new FieldInput(0,0,FieldInput.UserAction.Undo);
-                return inputUndo;   
-            }
-            else if(fieldInputString == "P" || fieldInputString == "P")
-            {
-                FieldInput inputPause = new FieldInput(0, 0, FieldInput.UserAction.Pause);
-                return(inputPause);
             }
             else
             {
-                int fieldInputLength = fieldInputString.Length;
+                WriteLine("Please enter a valid number in the range of 8 and 26.");
+            }
+        }
 
-                Match xMatch = Regex.Match(fieldInputString, @"[A-Z]");
-                char yChar = Convert.ToChar(xMatch.Value);
-                int yCoordinate = (int)yChar - 65;
+        GameboardSize = gameboardSize;
+        Console.Clear();
+        stopwatch.Reset();
+        stopwatch.Start();
+        return GameboardSize;
+    }
+
+    public FieldInput GetFieldUpate()
+    {
+
+        bool inputCheck = false;
+        int xCoordinate;
+        int yCoordinate;
+        string actionS;
+        FieldInput.Action action;
 
 
-                Match yMatch = Regex.Match(fieldInputString, @"\d{1,2}");
-                int xCoordinate = Convert.ToInt32(yMatch.Value) - 1;
+        do
+        {
 
-                Match actionMatch = Regex.Match(fieldInputString, @"(RF|R|F)$");
-                string action = actionMatch.Value;
+            Write("Which field do you want to change?: ");
 
-                var enumValue = action switch
+            _fieldInput = Console.ReadLine();
+            _fieldInput = _fieldInput.ToUpper();
+            inputCheck = CheckFieldInput(_fieldInput);
+        } while (inputCheck == false);
+        int fieldInputLength = _fieldInput.Length;
+
+        Match yMatch = Regex.Match(_fieldInput, @"[A-Z]");
+        char yChar = Convert.ToChar(yMatch.Value);
+        yCoordinate = (int)yChar - 65;
+
+
+        Match xMatch = Regex.Match(_fieldInput, @"\d{1,2}");
+        xCoordinate = (Convert.ToInt32(xMatch.Value) - 1);
+
+        Match actionMatch = Regex.Match(_fieldInput, @"(RF|R|F)$");
+        actionS = actionMatch.Value;
+
+        var enumValue = actionS switch
+        {
+            "R" => FieldInput.Action.Reveal,
+            "F" => FieldInput.Action.Flag,
+            "RF" => FieldInput.Action.RemoveFlag,
+            _ => FieldInput.Action.Reveal,
+        };
+
+        FieldInput fieldInput = new FieldInput(yCoordinate, xCoordinate, enumValue);
+        return fieldInput;
+    }
+
+    public bool CheckFieldInput(string input)
+    {
+        var x = (char)('A' + GameboardSize);
+        Regex rg = new Regex(@"([A-Z](2[0-6]|1[0-9]|[1-9])(RF|R|F))|((2[0-6]|1[0-9]|[1-9])[A-Z](RF|R|F))");
+
+        if (input.Length < 3 || input.Length > 5 | rg.IsMatch(input) != true)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void PrintGame(List<List<string>> gameboard, int gameboardSize, int bombs, int flags)
+    {
+        PrintGameInformations(bombs, flags);
+        PrintGameboard(gameboard, gameboardSize);
+    }
+
+    private void PrintGameInformations(int bombs, int flags)
+    {
+        //Console.Clear();
+        Write($"Bombs: {bombs} | Your set flags: {flags} | Seconds: ");
+        var hpos = Console.CursorLeft;
+        var vpos = Console.CursorTop;
+        if (!_isStarted)
+        {
+            _isStarted = true;
+            UI.Instance.PrintTimer(hpos, vpos);
+        }
+
+
+        //source.Cancel();
+    }
+
+    public void PrintTimer(int hPos, int vPos)
+    {
+        source = new CancellationTokenSource();
+        new Thread(() =>
+        {
+            while (!source.Token.IsCancellationRequested)
+            {
+                lock (_padLock)
                 {
-                    "R" => FieldInput.UserAction.Reveal,
-                    "F" => FieldInput.UserAction.Flag,
-                    "RF" => FieldInput.UserAction.RemoveFlag,
-                    _ => FieldInput.UserAction.Reveal,
-                };
-
-                FieldInput fieldInput = new FieldInput(xCoordinate, yCoordinate, enumValue);
-
-                return fieldInput;
+                    var currentLPos = Console.CursorLeft;
+                    var currentVPos = Console.CursorTop;
+                    Console.CursorLeft = hPos;
+                    Console.CursorTop = vPos;
+                    WriteLine(stopwatch.Elapsed.TotalSeconds.ToString("F2"));
+                    Console.CursorLeft = currentLPos;
+                    Console.CursorTop = currentVPos;
+                }
+                Thread.Sleep(100);
             }
-        }
+        }).Start();
+    }
 
+    private readonly static object _padLock = new object();
 
-
-        /// <summary>
-        /// Checks if the entered field input is valid.
-        /// </summary>
-        /// <param name="input">The input string to be checked.</param>
-        /// <returns>True if the input is valid, otherwise false.</returns>
-        public bool CheckFieldInput(string input)
+    public void WriteLine(string text)
+    {
+        lock (_padLock)
         {
-            Regex rg = new Regex(@"([A-Z](2[0-6]|1[0-9]|[1-9])(RF|R|F))|((2[0-6]|1[0-9]|[1-9])[A-Z](RF|R|F))");
-            if (Regex.IsMatch(input, "[UuPp]"))
+            Console.WriteLine(text);
+        }
+    }
+
+
+    public void Write(string text)
+    {
+        lock (_padLock)
+        {
+            Console.Write(text);
+        }
+    }
+
+    private void PrintGameboard(List<List<string>> gameboard, int gameboardSize)
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        WriteLine("");
+        Write("   ");
+
+        for (int i = 0; i < gameboardSize; i++)
+        {
+
+            if (i % 2 == 1)
             {
-                return true;
+                Console.ForegroundColor = ConsoleColor.White;
             }
-            else if (input.Length < 3 || input.Length > 5 | rg.IsMatch(input) != true)
+            else if (i % 2 == 0)
             {
-                return false;
+                Console.ForegroundColor = ConsoleColor.DarkGray;
             }
-            return true;
+            currentLineColor = Console.ForegroundColor;
+
+            Write(Convert.ToChar(i + 65) + " ");
         }
 
-        public void MakePause()
+        WriteLine("");
+        int t = 0;
+        int z = 0;
+        foreach (var list in gameboard)
         {
-            string input;
-            do
-            {
-                stopwatch.Stop();
-                Console.WriteLine("Press C to continue!");
-                input = Console.ReadLine();
-            } while (input != "C" && input != "c");
-            stopwatch.Start();
-        }
+            t++;
 
-
-        /// <summary>
-        /// Prints the current game board.
-        /// </summary>
-        /// <param name="gameBoard">The game board to be printed.</param>
-        public void PrintGame(List<List<string>> gameBoard, int bombs, int flags)
-        {
-            Console.WriteLine();
-            PrintGameInformations(bombs, flags);
-            PrintGameBoard(gameBoard);
-        }
-
-        /// <summary>
-        /// Prints the number of bombs and flags.
-        /// </summary>
-        /// <param name="bombs">The number of bombs.</param>
-        /// <param name="flags">The number of flags.</param>
-        private void PrintGameInformations(int bombs, int flags)
-        {
-
-            if(!stopwatch.IsRunning)
-            {
-                stopwatch.Start();
-            }
-            TimeSpan elapsedTime = stopwatch.Elapsed;
-            Console.WriteLine($"Bombs: {bombs} Flags: {flags} Time: {elapsedTime.Hours:00}:{elapsedTime.Minutes:00}:{elapsedTime.Seconds:00}");
-
-        }
-
-        /// <summary>
-        /// Prints the game board.
-        /// </summary>
-        /// <param name="gameBoard">The game board to be printed.</param>
-        /// <summary>
-        /// Prints the game board.
-        /// </summary>
-        /// <param name="gameBoard">The game board to be printed.</param>
-        public void PrintGameBoard(List<List<string>> gameBoard)
-        {
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("");
-            Console.Write("   ");
+            Write(String.Format("{0:00}", t) + " ");
 
-            for (int i = 0; i < gameBoard.Count; i++)
+            z = 0;
+            foreach (var element in list)
             {
-                if (i % 2 == 1)
+                Console.ForegroundColor = currentLineColor;
+                z++;
+
+                if (z % 2 == 0)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (i % 2 == 0)
+                else if (z % 2 == 1)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
-                CurrentColor = Console.ForegroundColor;
 
-                Console.Write(Convert.ToChar(i + 65) + " ");
-            }
 
-            Console.WriteLine("");
-            int t = 0;
-            int z = 0;
-            foreach (var list in gameBoard)
-            {
-                t++;
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(String.Format("{0:00}", t) + " ");
-
-                z = 0;
-                foreach (var element in list)
+                switch (element)
                 {
-                    z++;
+                    case "P":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                    if (z % 2 == 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else if (z % 2 == 1)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    }
+                    case "M":
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                    switch (element)
-                    {
-                        case "P":
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Write(element + " ");
-                            break;
+                    case "X":
+                        Write("■" + " ");
+                        break;
 
-                        case "M":
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(element + " ");
-                            break;
+                    case "0":
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "X":
-                            Console.Write("■" + " ");
-                            break;
+                    case "1":
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "0":
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write(element + " ");
-                            break;
+                    case "2":
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "1":
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write(element + " ");
-                            break;
+                    case "3":
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "2":
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write(element + " ");
-                            break;
+                    case "4":
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "3":
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write(element + " ");
-                            break;
+                    case "5":
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "4":
-                            Console.ForegroundColor = ConsoleColor.Magenta;
-                            Console.Write(element + " ");
-                            break;
+                    case "6":
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "5":
-                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                            Console.Write(element + " ");
-                            break;
+                    case "7":
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "6":
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(element + " ");
-                            break;
+                    case "8":
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Write(element + " ");
+                        Console.ForegroundColor = currentLineColor;
+                        break;
 
-                        case "7":
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.Write(element + " ");
-                            break;
-
-                        case "8":
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.Write(element + " ");
-                            break;
-
-                        default:
-                            Console.Write(element + " ");
-                            break;
-                    }
+                    default:
+                        Write(element + " ");
+                        break;
                 }
-                Console.WriteLine();
             }
-            Console.ResetColor();
-        }
-        public void PrintGameWon()
-        {
-            Console.Clear();
-            Thread.Sleep(300);
             Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗██╗");
-            Console.WriteLine("╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██╔═══██╗████╗  ██║██║");
-            Console.WriteLine(" ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║   ██║██╔██╗ ██║██║");
-            Console.WriteLine("  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║   ██║██║╚██╗██║╚═╝");
-            Console.WriteLine("   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║ ╚████║██╗");
-            Console.WriteLine("   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝");
-            Console.WriteLine();
-            Console.ResetColor();
-            stopwatch.Reset();
         }
+        Console.ResetColor();
+    }
 
-        public void PrintGameLost()
-        {
-            Console.Clear();
-            Thread.Sleep(300);
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine(" ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ ██╗");
-            Console.WriteLine("██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗██║");
-            Console.WriteLine("██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝██║");
-            Console.WriteLine("██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗╚═╝");
-            Console.WriteLine("╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║██╗");
-            Console.WriteLine(" ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝");
-            Console.WriteLine();
-            Console.ResetColor();
-            stopwatch.Reset();
-        }
-        public static void PlaySound(string fileName)
-        {
-            var assembly = typeof(UI).Assembly;
+    public void GameWon(Score score)
+    {
+        stopwatch.Stop();
+        PlaySound("winsound.wav");
+        Thread.Sleep(300);
+        source.Cancel();
+        WriteLine("");
+        Console.ForegroundColor = ConsoleColor.Green;
+        WriteLine("██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗██╗");
+        WriteLine("╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██╔═══██╗████╗  ██║██║");
+        WriteLine(" ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║   ██║██╔██╗ ██║██║");
+        WriteLine("  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║   ██║██║╚██╗██║╚═╝");
+        WriteLine("   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║ ╚████║██╗");
+        WriteLine("   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝");
+        WriteLine("");
+        WriteLine(Convert.ToString(score.Points));
+        WriteLine("");
+        Console.ResetColor();
+        WriteLine("Press Enter to play again!");
+    }
 
-            var resStream = assembly.GetManifestResourceStream($"Minesweeper.Sounds.{fileName}");
+    public void GameLost()
+    {
+        stopwatch.Stop();
+        PlaySound("bombsound.wav");
+        Thread.Sleep(300);
+        source.Cancel();
+        WriteLine("");
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        WriteLine(" ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ ██╗");
+        WriteLine("██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗██║");
+        WriteLine("██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝██║");
+        WriteLine("██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗╚═╝");
+        WriteLine("╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║██╗");
+        WriteLine(" ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝");
+        Console.ResetColor();
+        WriteLine("");
+        WriteLine("Press Enter to play again!");
+    }
 
-            if (resStream is null)
-            {
-                return;
-            }
-            var pathOfAssembly = typeof(Program).Assembly.Location;
-            SoundPlayer musicPlayer = new SoundPlayer(resStream);
-            musicPlayer.Play();
+    public static void PlaySound(string fileName)
+    {
+        var assembly = typeof(UI).Assembly;
+        
+        var resStream = assembly.GetManifestResourceStream($"Minesweeper.Resources.{fileName}");
+
+        if(resStream is null)
+        {
+            return;
         }
+        var pathOfAssembly = typeof(Program).Assembly.Location;
+        SoundPlayer musicPlayer = new SoundPlayer(resStream);
+        musicPlayer.Play();
+    }
+
+    public double GetTime()
+    {
+        return Convert.ToDouble(stopwatch.Elapsed.TotalSeconds);
     }
 }
-
 

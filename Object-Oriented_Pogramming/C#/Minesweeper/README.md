@@ -1,40 +1,24 @@
-# Produktvision : Vertiefungsprojekt V320
+# Minesweeper Konsolenanwendung
 
-**Authors**: 
-* [Nicolas Haas](https://github.com/cpowern)
-* [Michael Epper](https://github.com/m1chll)
-* [Carina Cordes](https://github.com/Coerres)
+Willkommen zum Minesweeper! Dieses Projekt wurde während meines Kurzpraktikums bei der Egeli Informatik AG in enger Zusammenarbeit mit @sophia entwickelt. Das Spiel bietet klassische Minesweeper-Action in der Konsole und enthält viele durchdachte Features, die das Spielerlebnis verbessern und erweitern.
 
-## Minesweeper Basic: Eine Neuinterpretation des Klassikers
+## Hauptfunktionen
 
-**Für Spieler, die nach einer unterhaltsamen und herausfordernden Erfahrung suchen, deren Interesse an klassischen Puzzlespielen geweckt ist und vielleicht möglicherweise alte Erinnerungen wecken will, ist Minesweeper Deluxe eine vereinfachte Version des beliebten Minesweeper-Spiels. Das auch durch simple Grafiken, anpassbare Schwierigkeitsgrade und flüssige Laufzeit. Im Gegensatz zu anderen Minesweeper-Implementierungen, bietet unser Produkt eine intuitive und simple Benutzeroberfläche, visuelle bunte Ästhetik und einen laufenden Timer, um Ihr Können zu testen.**
+- **Anpassbare Schwierigkeitsgrade**: Wähle zwischen den Schwierigkeitsstufen leicht, mittel und schwer, um das Spiel individuell an deine Fähigkeiten anzupassen.
+- **Highscore-Datenbank**: Deine besten Ergebnisse werden mithilfe des Entity Frameworks in einer SQL-Datenbank gespeichert. So kannst du deine Fortschritte beobachten und dich mit anderen Spielern vergleichen.
+- **Detaillierter Timer**: Der Timer wurde besonders aufwendig entwickelt, da die Herausforderung darin bestand, den Cursor zwischen dem Timer und dem Eingabefeld hin- und herspringen zu lassen, ohne das Spielerlebnis zu beeinträchtigen.
+- **Optimierte Spielfeld-Generierung**: Eine speziell entwickelte Datenstruktur sorgt dafür, dass das Spielfeld effizient und herausfordernd generiert wird, was die Spannung im Spiel erhöht.
+- **Ingame-Sounds**: Um das Spielerlebnis noch spannender zu gestalten, wurden verschiedene Soundeffekte integriert, die das Spielgeschehen akustisch untermalen.
 
-## User Stories
+## Verwendete Technologien
 
-[Produktbacklog](https://github.com/m1chll/Minesweeper_V320/issues) 
-Diese User Stories sind darauf ausgerichtet, eine klare Vision für die Entwicklung unseres Minesweeper Basic Spiels zu bieten und sicherzustellen, dass wir die Bedürfnisse und Erwartungen der Benutzer erfüllen.
-
-## Klassendiagramm
-[Klassendiagramm](https://github.com/m1chll/Minesweeper_V320/blob/master/Diagramme/V320_Minesweeper_Klassendiagramm_Nicolas_Michael_Carina_2.pdf)
-Das Klassendiagramm zeigt unsere Herangehensweise an die Entwicklung des Minesweeper-Spiels. Es visualisiert die Struktur des Systems und die Beziehungen zwischen den Klassen wie Spielbrett, Zelle und Spieler. Es hilft uns, die Architektur zu planen und sicherzustellen, dass wir die Benutzeranforderungen erfüllen.
-
-
-## Sequenzdiagramm
-[Sequenzdiagramm](https://github.com/m1chll/Minesweeper_V320/blob/master/Diagramme/V320_Minesweeper_Sequenzdiagramm_Nicolas_Michael_Carina_2.pdf)
-Das Sequenzdiagramm veranschaulicht unseren Entwicklungsansatz für das Minesweeper-Spiel. Es zeigt die Interaktionen zwischen den Objekten, wie der Spieler eine Zelle auswählt, die Spielregeln überprüft werden und das Spielbrett aktualisiert wird. Es ermöglicht uns, den Ablauf eines Szenarios im Spiel zu verstehen und potenzielle Probleme zu identifizieren.
-
-
-## Minesweeper Applikatiom
-[Minesweeper](https://github.com/m1chll/Minesweeper_V320/tree/master/Minesweeper), [Minesweeper.Logic](https://github.com/m1chll/Minesweeper_V320/tree/master/Minesweeper.Logic)
-Wir freuen uns, Ihnen unsere Minesweeper-Applikation präsentieren zu können! Das Spiel wurde in C# entwickelt und bietet eine Vielzahl spannender Funktionen. Neben den eingängigen Soundeffekten haben wir auch an eine benutzerfreundliche Oberfläche gedacht. Freuen Sie sich auf verschiedene Sounds, eine Rückgängig-Funktion und eine sorgfältig durchdachte Logik, die das Spielerlebnis verbessert.
-
-## Minesweeper Tests
-[Testkonzept](https://github.com/m1chll/Minesweeper_V320/blob/master/Artefakte/V320_Minesweeper_Testkonzept_Nicolas_Michael_Carina.md)
-Unsere Applikation wurde selbstverständlich gründlich getestet, um eine hohe Qualität sicherzustellen. Die Tests bieten einen umfassenden Überblick über den Aufbau unseres Codes und garantieren eine reibungslose Funktionalität. Sollten Sie dennoch auf Fehler stossen - was höchst unwahrscheinlich ist -, bitten wir Sie, sich umgehend mit unserem Team in Verbindung zu setzen. Wir sind stets bereit, Unterstützung zu leisten und Probleme schnell zu beheben. [Minesweeper.Test](https://github.com/m1chll/Minesweeper_V320/tree/master/Minesweeper.Test)
-
-## Persönliche Reflexion
-[Reflexion](https://github.com/m1chll/Minesweeper_V320)
-In unserer Reflexion reflektieren wir über unsere Erfahrungen und Erkenntnisse bei der Entwicklung des Minesweeper-Projekts. Wir diskutieren die Herausforderungen, die wir während des Projekts erlebt haben, sowie die neuen Fähigkeiten und Erkenntnisse, die wir gewonnen haben.
-
+- **C#** für die gesamte Spielentwicklung
+- **.NET Core** für die Konsolenanwendung
+- **Entity Framework Core** zur Verwaltung der Highscore-Datenbank
+- **SQL-Datenbank** zur Speicherung der besten Spielergebnisse
 
 ---
+
+
+
+

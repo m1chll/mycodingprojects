@@ -1,96 +1,74 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Transactions;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Minesweeper
 {
-    //Test workflow
-    /// <summary>
-    /// Represents a Minesweeper game.
-    /// </summary>
-    public class Game
+    internal class Game
     {
-        private string difficulty;
-        private Gameboard Gameboard;
-        private GameboardCaretaker GameboardCaretaker;
-
-        /// <summary>
-        /// Gets or sets the status of the game.
-        /// </summary>
-        public GameStatus GameStatus { get; set; }
-
-        private List<List<string>> GameboardUI { get; set; }
-
-        private UI UI { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current field input for the game.
-        /// </summary>
-        public FieldInput CurrentFieldInput { get; set; }
 
 
-        /// <summary>
-        /// Plays the Minesweeper game.
-        /// </summary>
+        public int GameboardSize { get; set; }
+        private string Username { get; set; }   
         public void PlayGame()
         {
-            Gameboard = new Gameboard();
-            UI = new UI();
-            UI.PrintStartScreen();
-            string difficulty = UI.GetDifficulty();
-            GameboardCaretaker = new GameboardCaretaker();
+            Gameboard gameboard = new Gameboard();
+            UI.Instance.PrintStartScreen();
+            Username = UI.Instance.GetUsername();
+            int gameboardSize = UI.Instance.GetGameboardSize();
+            gameboard.CreateGameboard(gameboardSize);
+            Thread.Sleep(100);
+            Console.Clear();
+            var content = gameboard.GetFieldRepresentation();
+            UI.Instance.PrintGame(content, gameboardSize, gameboard.BombCount, gameboard.FlagCount);
 
-            GameboardCreator gameboardCreator = new GameboardCreator();
-            Gameboard = gameboardCreator.CreateGameboard(difficulty);
+            bool gameOver = false;
 
-            UI.PlaySound(@"StartGame.wav");
-
-            GameStatus = GameStatus.Ongoing;
-
-            while (GameStatus == GameStatus.Ongoing)
+            while (gameOver == false) 
             {
-                GameboardUI = Gameboard.GetGameboard();
-                UI.PrintGame(GameboardUI, Gameboard.BombCount, Gameboard.FlagCount);
-                GameboardCaretaker.SaveState(Gameboard);
-                CurrentFieldInput = UI.GetFieldUpdate();
-                ValidateUserInput();               
+                FieldInput updateField = UI.Instance.GetFieldUpate();
+                gameboard.UpdateField(updateField);
+                content = gameboard.GetFieldRepresentation();
+                Console.Clear();
+                UI.Instance.PrintGame(content, gameboardSize, gameboard.BombCount, gameboard.FlagCount);
+                gameOver = IsGameOver(gameboard);
             }
-            if (GameStatus == GameStatus.Lost)
-            {
-                UI.PlaySound(@"GameLost.wav");
-                UI.PrintGameLost();
-            }
-            else if (GameStatus == GameStatus.Won)
-            {
-                UI.PlaySound(@"YouWon.wav");
-                UI.PrintGameWon();
-            }
+
+
         }
 
-        private void ValidateUserInput()
+        bool IsGameOver(Gameboard gameBoard)
         {
-            if (CurrentFieldInput.ActionType == FieldInput.UserAction.Pause)
+            int markedBomb = default;
+            foreach(var field in gameBoard)
             {
-                GameStatus = GameStatus.Paused;
-                UI.MakePause();
-                UI.PlaySound(@"PauseSound.wav");
-                GameStatus = GameStatus.Ongoing;
-                CurrentFieldInput = UI.GetFieldUpdate();
-            }
-            if (CurrentFieldInput.ActionType == FieldInput.UserAction.Undo)
-            {
-                var prevState = GameboardCaretaker.RestoreState();
-                if (prevState != null)
+                if (field.IsVisible == true && field.IsBomb == true)
                 {
-                    Gameboard = prevState;
+                    UI.Instance.GameLost();
+                    return true;
+                }
+                else if (field.IsBomb && field.HasFlag)
+                {
+                    markedBomb++;
                 }
             }
-            else
+
+            if (markedBomb == gameBoard.BombCount)
             {
-                GameStatus = Gameboard.UpdateFields(CurrentFieldInput);
+                Score score = new Score(Username, UI.Instance.GetTime(), gameBoard.BombCount, gameBoard.GameboardSize);
+                Highscore.AddScoreToDatabase(score);
+                UI.Instance.GameWon(score);
+                return true;
             }
+
+            return false;
         }
     }
 }
+
+
