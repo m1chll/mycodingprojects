@@ -27,11 +27,9 @@ Die Funktion `Get-SLOC` durchsucht einen Ordner und seine Unterordner nach Datei
 1. **Beispiel 1:**
    ```powershell
    Get-SLOC -location "C:\Users\micha\OneDrive - Kt. SG BLD\KSB\Informatik Module\M122\test"
-   ´´´
 
 2. **Beispiel 2:**
    ```powershell
     Get-SLOC -location "C:\test"
-   ´´´
 
 
