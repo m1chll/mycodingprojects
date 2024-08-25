@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="officegear.AppController">
+   <children>
+      <HBox alignment="TOP_CENTER" styleClass="navbar" VBox.vgrow="ALWAYS">
+         <children>
+            <Label prefHeight="40.0" prefWidth="162.0" text="OfficeGear" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <Pane>
+                     <children>
+                        <TextField focusTraversable="false" prefHeight="40.0" prefWidth="600.0" promptText="Search" styleClass="textField-search">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets left="5.0" right="31.0" />
+                           </padding>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </TextField>
+                        <ImageView fitHeight="26.0" fitWidth="44.0" layoutX="567.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/search-icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </HBox>
+            <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/cart.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets top="7.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label alignment="TOP_LEFT" prefHeight="26.0" prefWidth="34.0" text="Cart">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets left="3.0" top="7.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="|" textFill="#898686">
+               <font>
+                  <Font size="25.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/user.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets left="3.0" top="7.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="userButton" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="65.0" text="User">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets left="3.0" top="7.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="|" textFill="#898686">
+               <font>
+                  <Font size="25.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="loginLabel" onMouseClicked="#loginLabelClicked" prefHeight="17.0" prefWidth="63.0" text="Login">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets left="3.0" top="7.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="100.0" right="100.0" top="15.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="25.0" styleClass="categoriesBar">
+         <children>
+            <Label fx:id="userButton11" prefHeight="26.0" prefWidth="147.0" text="OFFICE FURNITURES" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="userButton12" prefHeight="26.0" prefWidth="107.0" text="TECHNOLOGY">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="userButton13" prefHeight="26.0" prefWidth="138.0" text="COMMUNICATION" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="userButton14" prefHeight="26.0" prefWidth="125.0" text="OFFICE SUPPLIES" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="userButton15" prefHeight="26.0" prefWidth="156.0" text="OFFICE ERGONOMIES" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="userButton16" prefHeight="26.0" prefWidth="158.0" text="KITCHEN EQUIPMENT" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="100.0" right="100.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="302.0" fitWidth="1199.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <image>
+                  <Image url="@images/main_picture.png" />
+               </image>
+            </ImageView>
+         </children></HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label fx:id="userButton111" prefHeight="26.0" prefWidth="147.0" text="PRODUCTS" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="165.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="product-frame">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/table.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="TOP_CENTER" text="Product Title Goes Here">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="BRAND">
+                           <font>
+                              <Font name="System Bold" size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets right="120.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Label styleClass="full-price" text="CHF 200" textFill="#c5c5c5">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label text="CHF 140">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label styleClass="sale-box" text="30% Off">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="product-frame">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/table.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="TOP_CENTER" text="Product Title Goes Here">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="BRAND">
+                           <font>
+                              <Font name="System Bold" size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets right="120.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Label styleClass="full-price" text="CHF 200" textFill="#c5c5c5">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label text="CHF 140">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label styleClass="sale-box" text="30% Off">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="product-frame">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/table.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="TOP_CENTER" text="Product Title Goes Here">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="BRAND">
+                           <font>
+                              <Font name="System Bold" size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets right="120.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Label styleClass="full-price" text="CHF 200" textFill="#c5c5c5">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label text="CHF 140">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label styleClass="sale-box" text="30% Off">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="product-frame">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/table.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="TOP_CENTER" text="Product Title Goes Here">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="BRAND">
+                           <font>
+                              <Font name="System Bold" size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets right="120.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Label styleClass="full-price" text="CHF 200" textFill="#c5c5c5">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label text="CHF 140">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label styleClass="sale-box" text="30% Off">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

@@ -1,0 +1,25 @@
+.textField-search {
+    -fx-border-color: grey;
+}
+
+.navbar {
+    -fx-background-color: #F0F0F0;
+}
+
+.categoriesBar {
+    -fx-background-color: #F8F8F8;
+}
+
+.product-frame {
+    -fx-border-color: grey;
+}
+
+.full-price {
+    -fx-strikethrough: true;
+}
+
+.sale-box {
+    -fx-border-color: black; 
+    -fx-border-width: 1; 
+    -fx-border-style: solid;
+}
