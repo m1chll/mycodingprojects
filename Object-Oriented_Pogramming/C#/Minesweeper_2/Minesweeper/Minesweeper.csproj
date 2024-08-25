@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Sounds\GameLost.wav" />
+    <None Remove="Sounds\PauseSound.wav" />
+    <None Remove="Sounds\StartGame.mp3" />
+    <None Remove="Sounds\StartGame.wav" />
+    <None Remove="Sounds\YouWon.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Sounds\GameLost.wav" />
+    <EmbeddedResource Include="Sounds\PauseSound.wav" />
+    <EmbeddedResource Include="Sounds\StartGame.wav" />
+    <EmbeddedResource Include="Sounds\YouWon.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Minesweeper.Logic\Minesweeper.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
