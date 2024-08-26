@@ -33,4 +33,6 @@ During my time at the Informatikmittelschule, I also worked with scripting langu
 
 ---
 
-Thank you for taking the time to explore my work! Each project in this repository represents a step forward in my journey as a software engineer. If you have any questions about me or my work, please feel free to contact me at any time.
+Thank you for taking the time to explore my work! Each project in this repository represents a step forward in my journey as a software engineer. If you have any questions about me or my work, please feel free to contact me at any time. 
+
+---
