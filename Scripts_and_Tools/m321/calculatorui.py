@@ -4,9 +4,9 @@ import requests
 # IP-Adressen für die verschiedenen Operationen
 ip_addresses = {
     'add': '10.27.160.13',
-    'sub': '192.168.1.11',
-    'mul': '192.168.1.12',
-    'div': '192.168.1.13'
+    'sub': '10.27.160.19',
+    'mul': '10.27.160.18',
+    'div': '10.27.161.11'
 }
 
 def get_result(operation):
