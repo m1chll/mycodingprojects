@@ -1,33 +1,17 @@
-import requests
-import json
+from flask import Flask, request, jsonify
 
-def get_sum_from_service(number1, number2):
-    url = "http://<URL_Ihres_Dienstes>"  # Ersetzen Sie dies durch die tatsächliche URL Ihres Dienstes
-    headers = {'Content-Type': 'application/json'}
-    
-    # Erstellen des JSON-Objekts mit den Zahlen
-    data = {
-        "number1": number1,
-        "number2": number2
-    }
-    
-    # Senden der POST-Anfrage an den Dienst
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    
-    if response.status_code == 200:
-        # Extrahieren der Summe aus der Antwort
-        result = response.json()
-        return result.get('sum', 'No sum returned')  # 'sum' ist das angenommene Schlüsselwort
-    else:
-        return f"Error: {response.status_code}"
+app = Flask(__name__)
 
-if __name__ == "__main__":
-    # Eingabe der Zahlen
-    number1 = float(input("Geben Sie die erste Zahl ein: "))
-    number2 = float(input("Geben Sie die zweite Zahl ein: "))
-    
-    # Abrufen der Summe vom Dienst
-    result = get_sum_from_service(number1, number2)
-    
-    # Ausgabe des Ergebnisses
-    print(f"Die Summe der Zahlen {number1} und {number2} beträgt: {result}")
+@app.route('/summe', methods=['GET'])
+def summe():
+    zahl1 = float(request.args.get('zahl1', default=0))
+    zahl2 = float(request.args.get('zahl2', default=0))
+
+    summe = zahl1 + zahl2
+
+    response_data = {'summe': summe, 'message': 'MichaelEpper'}
+
+    return jsonify(response_data)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
