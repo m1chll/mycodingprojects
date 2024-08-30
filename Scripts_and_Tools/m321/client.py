@@ -1,3 +1,6 @@
+import requests
+import json
+
 def get_sum_from_service(number1, number2):
     url = "http://<URL_Ihres_Dienstes>"  # Ersetzen Sie dies durch die tatsächliche URL Ihres Dienstes
     headers = {'Content-Type': 'application/json'}
@@ -18,13 +21,13 @@ def get_sum_from_service(number1, number2):
     else:
         return f"Error: {response.status_code}"
 
-    if __name__ == "__main__":
-        # Eingabe der Zahlen
-        number1 = float(input("Geben Sie die erste Zahl ein: "))
-        number2 = float(input("Geben Sie die zweite Zahl ein: "))
-        
-        # Abrufen der Summe vom Dienst
-        result = get_sum_from_service(number1, number2)
-        
-        # Ausgabe des Ergebnisses
-        print(f"Die Summe der Zahlen {number1} und {number2} beträgt: {result}")
+if __name__ == "__main__":
+    # Eingabe der Zahlen
+    number1 = float(input("Geben Sie die erste Zahl ein: "))
+    number2 = float(input("Geben Sie die zweite Zahl ein: "))
+    
+    # Abrufen der Summe vom Dienst
+    result = get_sum_from_service(number1, number2)
+    
+    # Ausgabe des Ergebnisses
+    print(f"Die Summe der Zahlen {number1} und {number2} beträgt: {result}")
