@@ -27,6 +27,6 @@ def connect_to_manager(host, port):
 
 # Verbindung mit dem Manager-Server herstellen
 if __name__ == "__main__":
-    manager_host = "192.168.56.1"  # IP-Adresse des Managers
+    manager_host = "manager"  # Docker-Container-Name des Managers
     manager_port = 65432
     connect_to_manager(manager_host, manager_port)
