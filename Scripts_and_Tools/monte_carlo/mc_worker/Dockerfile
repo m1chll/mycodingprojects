@@ -6,7 +6,7 @@ RUN pip install --no-cache-dir socket
 
 # Kopiere den Worker-Code in den Container
 WORKDIR /app
-COPY worker.py /app/worker.py
+COPY mc_worker.py /app/mc_worker.py
 
 # Setze den Startbefehl für den Worker
-CMD ["python", "worker.py"]
+CMD ["python", "mc_worker.py"]
