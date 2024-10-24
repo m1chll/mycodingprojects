@@ -1,0 +1,26 @@
+services:
+  manager:
+    build:
+      context: ./manager
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    deploy:
+      replicas: 1
+    networks:
+      - pi_network
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 2
+    networks:
+      - pi_network
+    environment:
+      - MANAGER_URL=http://manager:5000
+
+networks:
+  pi_network:
+    driver: overlay
